@@ -6,13 +6,10 @@ from database import engine, Base, get_db
 from models import User, Project, Column, Task, TaskLog
 from schemas import UserCreate, ProjectCreate, ColumnCreate, TaskCreate, TaskLogCreate
 
-# Инициализация приложения
 app = FastAPI()
 
-# Создание таблиц
 Base.metadata.create_all(bind=engine)
 
-# Пользователи
 @app.post("/users/", response_model=UserCreate)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.email == user.email).first()
